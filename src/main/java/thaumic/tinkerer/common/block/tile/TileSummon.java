@@ -53,24 +53,18 @@ public class TileSummon extends TileEntity {
                             for (EnumMobAspect recipe : EnumMobAspect.values()) {
                                 if (Arrays.asList(recipe.aspects).containsAll(aspects) && aspects.containsAll(Arrays.asList(recipe.aspects))) {
 
-                                    boolean isInfused = ItemMobAspect.isInfused(ped1.getStackInSlot(0)) &&
-                                            ItemMobAspect.isInfused(ped2.getStackInSlot(0)) &&
-                                            ItemMobAspect.isInfused(ped3.getStackInSlot(0));
+                                    boolean isInfusedPed1 = ItemMobAspect.isInfused(ped1.getStackInSlot(0));
+                                    boolean isInfusedPed2 = ItemMobAspect.isInfused(ped2.getStackInSlot(0));
+                                    boolean isInfusedPed3 = ItemMobAspect.isInfused(ped3.getStackInSlot(0));
+                                    boolean isInfused = isInfusedPed1 || isInfusedPed2 || isInfusedPed3;
 
                                     if (isInfused && worldObj.getTotalWorldTime() % 1200 != 0) {
                                         return;
                                     }
 
-                                    if (!isInfused) {
-                                        ped1.setInventorySlotContents(0, null);
-                                        ped2.setInventorySlotContents(0, null);
-                                        ped3.setInventorySlotContents(0, null);
-                                    }
-
-
-                                    if (!isInfused || ItemMobAspect.lastUsedTabletMatches(ped1.getStackInSlot(0), this)
-                                            && ItemMobAspect.lastUsedTabletMatches(ped2.getStackInSlot(0), this)
-                                            && ItemMobAspect.lastUsedTabletMatches(ped3.getStackInSlot(0), this)) {
+                                    if ((!isInfusedPed1 || ItemMobAspect.lastUsedTabletMatches(ped1.getStackInSlot(0), this)) &&
+                                        (!isInfusedPed2 || ItemMobAspect.lastUsedTabletMatches(ped2.getStackInSlot(0), this)) &&
+                                        (!isInfusedPed3 || ItemMobAspect.lastUsedTabletMatches(ped3.getStackInSlot(0), this))) {
 
                                         if (!worldObj.isRemote) {
                                             Entity spawn = EntityList.createEntityByName(recipe.toString(), worldObj);
@@ -82,18 +76,23 @@ public class TileSummon extends TileEntity {
                                             ((EntityLiving) spawn).onSpawnWithEgg(null);
                                             ((EntityLiving) spawn).playLivingSound();
                                         }
-
-                                        if (worldObj.isRemote) {
+                                        else {
                                             ThaumicTinkerer.tcProxy.essentiaTrailFx(worldObj, ped1.xCoord, ped1.yCoord, ped1.zCoord, xCoord, yCoord, zCoord, 20, aspects.get(0).getColor(), 20);
                                             ThaumicTinkerer.tcProxy.essentiaTrailFx(worldObj, ped2.xCoord, ped2.yCoord, ped2.zCoord, xCoord, yCoord, zCoord, 20, aspects.get(1).getColor(), 20);
                                             ThaumicTinkerer.tcProxy.essentiaTrailFx(worldObj, ped3.xCoord, ped3.yCoord, ped3.zCoord, xCoord, yCoord, zCoord, 20, aspects.get(2).getColor(), 20);
                                         }
                                     }
-                                    if (isInfused) {
+
+                                    if (!isInfusedPed1) {
+                                        ped1.setInventorySlotContents(0, null);
                                         ItemMobAspect.markLastUsedTablet(ped1.getStackInSlot(0), this);
-
+                                    }
+                                    if (!isInfusedPed2) {
+                                        ped2.setInventorySlotContents(0, null);
                                         ItemMobAspect.markLastUsedTablet(ped2.getStackInSlot(0), this);
-
+                                    }
+                                    if (!isInfusedPed3) {
+                                        ped3.setInventorySlotContents(0, null);
                                         ItemMobAspect.markLastUsedTablet(ped3.getStackInSlot(0), this);
                                     }
 
