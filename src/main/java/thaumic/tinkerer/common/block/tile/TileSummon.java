@@ -62,10 +62,12 @@ public class TileSummon extends TileEntity {
                                         return;
                                     }
 
+                                    /*
                                     if ((!isInfusedPed1 || ItemMobAspect.lastUsedTabletMatches(ped1.getStackInSlot(0), this)) &&
                                         (!isInfusedPed2 || ItemMobAspect.lastUsedTabletMatches(ped2.getStackInSlot(0), this)) &&
-                                        (!isInfusedPed3 || ItemMobAspect.lastUsedTabletMatches(ped3.getStackInSlot(0), this))) {
-
+                                        (!isInfusedPed3 || ItemMobAspect.lastUsedTabletMatches(ped3.getStackInSlot(0), this)))
+                                    */
+                                    {
                                         if (!worldObj.isRemote) {
                                             Entity spawn = EntityList.createEntityByName(recipe.toString(), worldObj);
                                             spawn.setLocationAndAngles(xCoord + .5, yCoord + 1, zCoord + .5, 0, 0);
@@ -84,16 +86,16 @@ public class TileSummon extends TileEntity {
                                     }
 
                                     if (!isInfusedPed1) {
-                                        ped1.setInventorySlotContents(0, null);
                                         ItemMobAspect.markLastUsedTablet(ped1.getStackInSlot(0), this);
+                                        ped1.setInventorySlotContents(0, null);
                                     }
                                     if (!isInfusedPed2) {
-                                        ped2.setInventorySlotContents(0, null);
                                         ItemMobAspect.markLastUsedTablet(ped2.getStackInSlot(0), this);
+                                        ped2.setInventorySlotContents(0, null);
                                     }
                                     if (!isInfusedPed3) {
-                                        ped3.setInventorySlotContents(0, null);
                                         ItemMobAspect.markLastUsedTablet(ped3.getStackInSlot(0), this);
+                                        ped3.setInventorySlotContents(0, null);
                                     }
 
                                     return;
