@@ -1,14 +1,13 @@
 package ic2.api.crops;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Base agriculture crop.
@@ -29,7 +28,7 @@ public abstract class CropCard {
      * @return Your name
      */
     public String discoveredBy() {
-        return "Alblaka";
+        return "IC2 Team";
     }
 
     /**
@@ -197,6 +196,15 @@ public abstract class CropCard {
     public boolean rightclick(ICropTile crop, EntityPlayer player) {
         return crop.harvest(true);
     }
+
+    /**
+     * Use in Crop Havester with insert Cropnalyzer to get best Output.
+     *
+     * @param crop reference to ICropTile
+     * @return need crop  size for best output.
+     */
+
+    public abstract int getOptimalHavestSize(ICropTile crop);
 
     /**
      * Check whether the crop can be harvested.

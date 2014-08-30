@@ -1,14 +1,13 @@
 package ic2.api.energy.tile;
 
 import net.minecraft.tileentity.TileEntity;
-
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * For internal/multi-block usage only.
  *
- * @see IEnergySink
- * @see IEnergyConductor
+ * @see ic2.api.energy.tile.IEnergySink
+ * @see ic2.api.energy.tile.IEnergyConductor
  * <p/>
  * See ic2/api/energy/usage.txt for an overall description of the energy net api.
  */

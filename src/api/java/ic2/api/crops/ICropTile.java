@@ -211,11 +211,22 @@ public interface ICropTile {
 
     /**
      * Harvest the crop, turning it into gain and resetting its size.
+     * drop output on ground
      *
-     * @param manual whether it one by hand (not automated)
+     * @param manual
      * @return true if successfully harvested
      */
     public boolean harvest(boolean manual);
+
+    /**
+     * Harvest the crop, turning it into gain and resetting its size.
+     * drop output on ground
+     *
+     * @param Optimal force check getOptimalHavestSize() for harvest
+     * @return ItemStack[] of harvest output
+     */
+
+    ItemStack[] harvest_automated(boolean Optimal);
 
     /**
      * Fully clears the crop without dropping anything.
@@ -247,4 +258,6 @@ public interface ICropTile {
      * @return Plant seed item
      */
     public ItemStack generateSeeds(short plant, byte growth, byte gain, byte resis, byte scan);
+
+
 }

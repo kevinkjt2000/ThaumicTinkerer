@@ -1,8 +1,8 @@
 package ic2.api.energy.tile;
 
-import java.util.List;
-
 import net.minecraft.tileentity.TileEntity;
+
+import java.util.List;
 
 /**
  * Interface for grouping multi-block structures to a single energy net delegate.
@@ -27,7 +27,9 @@ public interface IMetaDelegate extends IEnergyTile {
      * Get the sub-TileEntities belonging to this Meta TileEntity.
      *
      * @return sub-TileEntity array
-     * @note the list has to be consistent between the EnergyNet Load and Unload events.
+     * @note The list has to be consistent between the EnergyNet Load and Unload events.
+     * @note The list must have at least 1 element.
+     * @note The parent te implementing IMetaDelegate isn't automatically included.
      */
     List<TileEntity> getSubTiles();
 }
