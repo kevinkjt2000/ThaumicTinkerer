@@ -17,19 +17,20 @@ package thaumic.tinkerer.common.item.kami.tool;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.StatCollector;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.block.kami.BlockBedrockPortal;
 import thaumic.tinkerer.common.core.handler.ConfigHandler;
+import thaumic.tinkerer.common.core.helper.MiscHelper;
 import thaumic.tinkerer.common.dim.WorldProviderBedrock;
+
+import java.util.List;
 
 public final class ToolHandler {
 
@@ -63,13 +64,19 @@ public final class ToolHandler {
 		for (int x1 = xs; x1 < xe; x1++) {
 			for (int y1 = ys; y1 < ye; y1++) {
 				for (int z1 = zs; z1 < ze; z1++) {
-					if (x != x1 && y != y1 && z != z1) {
-						ToolHandler.removeBlockWithDrops(player, world, x1 + x, y1 + y, z1 + z, x, y, z, block, materialsListing, silk, fortune, blockHardness);
+                    //if (x != x1 && y != y1 && z != z1) {
+                    ToolHandler.removeBlockWithDrops(player, world, x1 + x, y1 + y, z1 + z, x, y, z, block, materialsListing, silk, fortune, blockHardness);
 
-					}
-				}
+                    //}
+                }
 			}
 		}
+        List list=world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x + xs, y + ys, z + zs, x + xe, y + ye, z + ze));
+        for(Object entity:list)
+        {
+            EntityItem item=(EntityItem)entity;
+            item.setPosition(player.posX,player.posY+1,player.posZ);
+        }
 	}
 
 	public static void removeBlockWithDrops(EntityPlayer player, World world, int x, int y, int z, int bx, int by, int bz, Block block, Material[] materialsListing, boolean silk, int fortune, float blockHardness) {
@@ -94,11 +101,12 @@ public final class ToolHandler {
 			}
 			if (!player.capabilities.isCreativeMode && blk != Blocks.bedrock) {
 				int localMeta = world.getBlockMetadata(x, y, z);
-				if (blk.removedByPlayer(world, player, x, y, z)) {
-					blk.onBlockDestroyedByPlayer(world, x, y, z, localMeta);
-				}
-				blk.harvestBlock(world, player, x, y, z, localMeta);
-				blk.onBlockHarvested(world, x, y, z, localMeta, player);
+                if(MiscHelper.breakBlockToAirWithCheck(world, x, y, z, player)) {
+                    blk.onBlockDestroyedByPlayer(world, x, y, z, localMeta);
+
+                    blk.harvestBlock(world, player, x, y, z, localMeta);
+                    blk.onBlockHarvested(world, x, y, z, localMeta, player);
+                }
 			} else {
 				world.setBlockToAir(x, y, z);
 			}
