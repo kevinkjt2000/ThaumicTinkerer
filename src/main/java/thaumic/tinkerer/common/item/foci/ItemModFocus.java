@@ -58,6 +58,7 @@ public abstract class ItemModFocus extends ItemBase implements IWandFocus {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister) {
 		super.registerIcons(par1IconRegister);
+		itemIcon=IconHelper.forItem(par1IconRegister,this);
 		if (hasOrnament())
 			ornament = IconHelper.forItem(par1IconRegister, this, "Orn");
 		if (hasDepth())
