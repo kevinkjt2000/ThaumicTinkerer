@@ -18,7 +18,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import thaumic.tinkerer.client.core.proxy.TTClientProxy;
+import thaumic.tinkerer.common.core.proxy.TTCommonProxy;
 import thaumic.tinkerer.common.lib.LibBlockNames;
 import thaumic.tinkerer.common.registry.ITTinkererItem;
 import thaumic.tinkerer.common.registry.ThaumicTinkererRecipe;
@@ -28,42 +28,42 @@ import java.util.ArrayList;
 
 public class ItemBlockWarpGate extends ItemBlock implements ITTinkererItem {
 
-	public ItemBlockWarpGate(Block par1) {
-		super(par1);
-	}
+    public ItemBlockWarpGate(Block par1) {
+        super(par1);
+    }
 
-	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return TTClientProxy.kamiRarity;
-	}
+    @Override
+    public EnumRarity getRarity(ItemStack par1ItemStack) {
+        return TTCommonProxy.kamiRarity;
+    }
 
-	@Override
-	public ArrayList<Object> getSpecialParameters() {
-		return null;
-	}
+    @Override
+    public ArrayList<Object> getSpecialParameters() {
+        return null;
+    }
 
-	@Override
-	public String getItemName() {
-		return LibBlockNames.WARP_GATE;
-	}
+    @Override
+    public String getItemName() {
+        return LibBlockNames.WARP_GATE;
+    }
 
-	@Override
-	public boolean shouldRegister() {
-		return false;
-	}
+    @Override
+    public boolean shouldRegister() {
+        return false;
+    }
 
-	@Override
-	public boolean shouldDisplayInTab() {
-		return true;
-	}
+    @Override
+    public boolean shouldDisplayInTab() {
+        return true;
+    }
 
-	@Override
-	public IRegisterableResearch getResearchItem() {
-		return null;
-	}
+    @Override
+    public IRegisterableResearch getResearchItem() {
+        return null;
+    }
 
-	@Override
-	public ThaumicTinkererRecipe getRecipeItem() {
-		return null;
-	}
+    @Override
+    public ThaumicTinkererRecipe getRecipeItem() {
+        return null;
+    }
 }

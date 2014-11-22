@@ -1,7 +1,6 @@
 package thaumic.tinkerer.common.item.foci;
 
 import net.minecraft.block.Block;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -10,10 +9,10 @@ import net.minecraft.util.MovingObjectPosition;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchPage;
-import thaumcraft.common.config.Config;
+import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.wands.ItemWandCasting;
-import thaumcraft.common.lib.Utils;
+import thaumcraft.common.lib.utils.BlockUtils;
 import thaumic.tinkerer.common.ThaumicTinkerer;
 import thaumic.tinkerer.common.lib.LibItemNames;
 import thaumic.tinkerer.common.lib.LibResearch;
@@ -28,7 +27,12 @@ import java.util.Map;
 
 public class ItemFocusSmelt extends ItemModFocus {
 
+    private static final AspectList visUsage = new AspectList().add(Aspect.FIRE, 45).add(Aspect.ENTROPY, 12);
     public static Map<String, SmeltData> playerData = new HashMap();
+
+    public ItemFocusSmelt() {
+        super();
+    }
 
     @Override
     public String getItemName() {
@@ -51,28 +55,8 @@ public class ItemFocusSmelt extends ItemModFocus {
                 'N', new ItemStack(ConfigItems.itemResource, 1, 1));
     }
 
-    static class SmeltData {
-        public MovingObjectPosition pos;
-        public int progress;
-
-        public SmeltData(MovingObjectPosition pos, int progress) {
-            this.pos = pos;
-            this.progress = progress;
-        }
-
-        public boolean equalPos(MovingObjectPosition pos) {
-            return pos.blockX == this.pos.blockX && pos.blockY == this.pos.blockY && pos.blockZ == this.pos.blockZ;
-        }
-    }
-
-    private static final AspectList visUsage = new AspectList().add(Aspect.FIRE, 45).add(Aspect.ENTROPY, 12);
-
-    public ItemFocusSmelt() {
-        super();
-    }
-
     @Override
-    public boolean isUseItem() {
+    public boolean isUseItem(ItemStack stack) {
         return true;
     }
 
@@ -82,7 +66,7 @@ public class ItemFocusSmelt extends ItemModFocus {
         if (!wand.consumeAllVis(stack, p, visUsage, false, false))
             return;
 
-        MovingObjectPosition pos = Utils.getTargetBlock(p.worldObj, p, false);
+        MovingObjectPosition pos = BlockUtils.getTargetBlock(p.worldObj, p, false);
 
         if (pos != null) {
             Block block = p.worldObj.getBlock(pos.blockX, pos.blockY, pos.blockZ);
@@ -123,7 +107,7 @@ public class ItemFocusSmelt extends ItemModFocus {
                 }
 
                 if (!decremented) {
-                    int potency = EnchantmentHelper.getEnchantmentLevel(Config.enchPotency.effectId, wand.getFocusItem(stack));
+                    int potency = this.getUpgradeLevel(stack, FocusUpgradeType.potency);
                     playerData.put(p.getGameProfile().getName(), new SmeltData(pos, 20 - Math.min(3, potency) * 5));
                 } else for (int i = 0; i < 2; i++) {
                     double x = pos.blockX + Math.random();
@@ -151,13 +135,32 @@ public class ItemFocusSmelt extends ItemModFocus {
     }
 
     @Override
-    public int getFocusColor() {
+    public int getFocusColor(ItemStack stack) {
         return 0xFF0000;
     }
 
     @Override
-    public AspectList getVisCost() {
+    public AspectList getVisCost(ItemStack stack) {
         return visUsage;
+    }
+
+    @Override
+    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemStack, int i) {
+        return new FocusUpgradeType[]{FocusUpgradeType.treasure, FocusUpgradeType.potency};
+    }
+
+    static class SmeltData {
+        public MovingObjectPosition pos;
+        public int progress;
+
+        public SmeltData(MovingObjectPosition pos, int progress) {
+            this.pos = pos;
+            this.progress = progress;
+        }
+
+        public boolean equalPos(MovingObjectPosition pos) {
+            return pos.blockX == this.pos.blockX && pos.blockY == this.pos.blockY && pos.blockZ == this.pos.blockZ;
+        }
     }
 
 }
